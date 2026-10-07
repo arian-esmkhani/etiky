@@ -183,12 +183,12 @@ func (r sliderRepo) GetCheapestProductsByFilter(ctx context.Context,
 			(p.price * (100 - p.discount) / 100)::BIGINT AS final_price
 		FROM products p
 		WHERE p.deleted_at IS NULL
-			AND (p.tags @> ARRAY[$1] OR p.kind = $1) AND p.count > 0
+			AND (p.mark = $1 OR p.tags @> ARRAY[$2] OR p.features @> ARRAY[$3]) AND p.count > 0
 		ORDER BY final_price ASC
-		LIMIT $2
+		LIMIT $4
 	`
 
-	rows, err := r.db.Query(ctx, query, filter, defaultLimit)
+	rows, err := r.db.Query(ctx, query, filter.Mark, filter.Tags, filter.Features, defaultLimit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query cheapest products by filter '%s': %v", filter, err)
 	}
