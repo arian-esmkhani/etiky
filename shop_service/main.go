@@ -27,7 +27,7 @@ func main() {
 		Port:     getEnvInt("DB_PORT", 5432),
 		User:     getEnv("DB_USER", "postgres"),
 		Password: getEnv("DB_PASSWORD", "pass"),
-		Database: getEnv("DB_NAME", "etiky"),
+		Database: getEnv("DB_NAME", "etiky_copy"),
 		SSLMode:  getEnv("DB_SSLMODE", "disable"),
 	}
 	
@@ -61,7 +61,7 @@ func main() {
     }))
 
 	// Start HTTP server
-	log.Fatal(app.Listen(getEnv("APP_PORT", "5002")))
+	log.Fatal(app.Listen(getEnv("APP_PORT", ":5002")))
 }
 
 // getEnv retrieves environment variable or returns default value if not set.
