@@ -10,20 +10,24 @@ import { useRouter } from "next/navigation";
 
 export function DiscountSlider() {
     const [cards, setCards] = useState<PreviewProductDto[]>([])
-    const { getByDiscount } = useSlider()
+    const { getByDiscount, error } = useSlider()
     const router = useRouter();
 
+    // Fetch data from server
     useEffect(() => {
         const fetchNewest = async () => {
             const data = await getByDiscount();
-            if (data && data.length > 0) {
+            if(error != null) {
+                console.log(error)
+            } else if (data && data.length > 0) {
                 setCards(data);
-            }
+            } 
         };
 
         fetchNewest();
-    }, [getByDiscount])
+    }, [getByDiscount, error])
 
+    // Creating slider items
     const items = useMemo(() => {
         return cards.map((item) => ({
             imgSrc:"/api" + item.img_url,
