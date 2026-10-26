@@ -122,7 +122,7 @@ func (h *SliderHandler) GetCheapestProductsByFilter(c *fiber.Ctx) error {
 	}
 
 	if len(slider) < 1 {
-		log.Warn("No cheapest products by filter products found")
+		log.Warnf("No cheapest products by filter products found by filter '%s'", filter)
 		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"message": noContentMassage,
 		})

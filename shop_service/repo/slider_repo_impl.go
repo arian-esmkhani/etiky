@@ -188,7 +188,7 @@ func (r sliderRepo) GetCheapestProductsByFilter(ctx context.Context,
 		LIMIT $4
 	`
 
-	rows, err := r.db.Query(ctx, query, filter.Mark, filter.Tags, filter.Features, defaultLimit)
+	rows, err := r.db.Query(ctx, query, filter.Mark, filter.Tag, filter.Feature, defaultLimit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query cheapest products by filter '%s': %v", filter, err)
 	}

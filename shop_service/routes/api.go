@@ -24,5 +24,5 @@ func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler) {
 	slider.Get("/discount", sliderHandler.GetProductsByDiscount)
 	slider.Get("/best-selling", sliderHandler.GetBestSellingProducts)
 	slider.Get("/cheapest", sliderHandler.GetCheapestProducts)
-	slider.Get("/filter", sliderHandler.GetCheapestProductsByFilter)
+	slider.Post("/filter", sliderHandler.GetCheapestProductsByFilter)
 }
