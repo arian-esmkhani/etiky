@@ -183,7 +183,8 @@ func (r sliderRepo) GetCheapestProductsByFilter(ctx context.Context,
 			(p.price * (100 - p.discount) / 100)::BIGINT AS final_price
 		FROM products p
 		WHERE p.deleted_at IS NULL
-			AND (p.mark = $1 OR p.tags @> ARRAY[$2] OR p.features @> ARRAY[$3]) AND p.count > 0
+		AND ($1 = '' OR p.mark = $1) AND ($2 = '' OR p.tags @> ARRAY[$2])
+		AND ($3 = '' OR p.features @> ARRAY[$3]) AND p.count > 0
 		ORDER BY final_price ASC
 		LIMIT $4
 	`
