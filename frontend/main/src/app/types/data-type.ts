@@ -64,3 +64,16 @@ export interface ArticleDto {
     // Content
     content: ContentDto[];
 }
+
+export interface LoginDto {
+    number: string;
+    password: string;
+}
+
+export interface AuthResponse {
+    message: string;
+}
+
+export interface LoginResponse {
+    success: boolean;
+}

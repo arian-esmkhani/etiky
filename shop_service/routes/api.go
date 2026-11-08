@@ -47,7 +47,7 @@ func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
 	finder.Get("/articles/:slug", finderHandler.FindArticleBySlug)
 
 	// Auth routes
-	auth := api.Group("/auth")
+	auth := api.Group("/auth", middleware.DefaultLimiter())
 	auth.Post("/signup", userHandler.CreateUser)
 	auth.Post("/admin/signup", userHandler.CreateAdminUser)
 	auth.Post("/login", userHandler.Login)  
