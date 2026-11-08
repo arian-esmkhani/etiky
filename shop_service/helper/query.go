@@ -1,24 +1,17 @@
 package helper
 
 import (
-	"strconv"
-
 	"fiber-app/dto"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 const maxPrice = 999_999_999
 
-// ReadProductFilter reads and validates product filter query params.
-// On failure it returns the name of the invalid field.
-func ReadProductFilter(c *fiber.Ctx) (dto.ProductFilterDto, string) {
-	filter := dto.ProductFilterDto{
-		Mark:    c.Query("mark", ""),
-		Feature: c.Query("feature", ""),
-		Tag:     c.Query("tag", ""),
-	}
-
+// ValidateProductFilter validates all fields of a product filter.
+// It returns the name of the first invalid field, or "" if everything is valid.
+func ValidateProductFilter(filter dto.ProductFilterDto) string {
 	fields := []struct {
 		name  string
 		value string
@@ -30,11 +23,11 @@ func ReadProductFilter(c *fiber.Ctx) (dto.ProductFilterDto, string) {
 
 	for _, f := range fields {
 		if !ValidFilterValue(f.value) {
-			return dto.ProductFilterDto{}, f.name
+			return f.name
 		}
 	}
 
-	return filter, ""
+	return ""
 }
 
 // ReadPriceRange reads low_price and max_price.

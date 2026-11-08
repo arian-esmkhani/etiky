@@ -9,7 +9,8 @@ import (
 
 // SetupAPIRoutes configures all API routes with their middleware and handlers.
 // Groups routes under /api prefix with compression, CORS, and rate limiting.
-func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler) {
+func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
+	finderHandler *handler.FinderHandler) {
 
 	api := app.Group("/api",
 		middleware.Compression(),
@@ -25,4 +26,21 @@ func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler) {
 	slider.Get("/best-selling", sliderHandler.GetBestSellingProducts)
 	slider.Get("/cheapest", sliderHandler.GetCheapestProducts)
 	slider.Post("/filter", sliderHandler.GetCheapestProductsByFilter)
+
+	// Finder routes
+	finder := api.Group("/finder", middleware.DefaultLimiter())
+
+	// products
+	finder.Get("/cheapest", finderHandler.FindCheapestProducts)
+	finder.Get("/discount", finderHandler.FindProductsByDiscount)
+	finder.Get("/best-selling", finderHandler.FindBestSellingProducts)
+	finder.Post("/filter", finderHandler.FindCheapestProductsByFilter)
+
+	// search
+	finder.Get("/search", finderHandler.SearchProducts)
+	finder.Get("/search/suggestions", finderHandler.GetSearchSuggestions)
+
+	// articles
+	finder.Get("/articles/:title", finderHandler.FindArticleByTitle)
+	finder.Get("/articles/:slug", finderHandler.FindArticleBySlug)
 }

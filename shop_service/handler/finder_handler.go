@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fiber-app/dto"
 	"fiber-app/helper"
 	"fiber-app/service"
 	"time"
@@ -91,7 +92,7 @@ func (h *FinderHandler) FindBestSellingProducts(c *fiber.Ctx) error {
 		})
 	}
 
-	page := helper.GetPage(c)
+	var page uint8 = helper.GetPage(c)
 
 	result, err := h.service.FindBestSellingProducts(ctx, category, page)
 	if err != nil {
@@ -115,11 +116,19 @@ func (h *FinderHandler) FindCheapestProductsByFilter(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.UserContext(), 3*time.Second)
 	defer cancel()
 
-	filter, badField := helper.ReadProductFilter(c)
-	if badField != "" {
-		log.Warn(invalidCategory+badField)
+	var filter dto.ProductFilterDto
+	if err := c.BodyParser(&filter); err != nil {
+		log.Errorf("Failed to parse request body: %v", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": invalidCategory+badField,
+			"message": "invalid request body",
+		})
+	}
+
+	var inValidFiled string = helper.ValidateProductFilter(filter)
+	if inValidFiled != "" {
+		log.Error(invalidCategory + ":" + inValidFiled)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "invalid request body",
 		})
 	}
 
@@ -250,7 +259,7 @@ func (h *FinderHandler) FindArticleByTitle(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.UserContext(), 3*time.Second)
 	defer cancel()
 
-	title := c.Query("title", "")
+	title := c.Params("title")
 	if !helper.ValidText(title) {
 		log.Warn("invalid title format"+title)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
