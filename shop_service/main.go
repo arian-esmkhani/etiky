@@ -3,6 +3,7 @@ package main
 import (
 	"fiber-app/config"
 	"fiber-app/handler"
+	"fiber-app/helper"
 	"fiber-app/migration"
 	"fiber-app/repo"
 	"fiber-app/routes"
@@ -46,17 +47,26 @@ func main() {
 	// Initialize Fiber with sonic JSON and production settings
 	config.SetupSonic()
 	app   := config.SetupFiber()
+
+	// Jwt config
+	jwt := helper.NewJWT(helper.Config{
+		AccessSecret:  []byte(getEnv("JWT_ACCESS_SECRET", "")),
+		Issuer:        getEnv("JWT_ISSUER", ""),
+	})
     
 	// Dependency Injection Setup
 	sliderRepo 	   := repo.NewSliderRepo(db)
 	finderRepo	   := repo.NewFinderRepo(db)
+	userRepo	   := repo.NewUserRepo(db)
 	sliderService  := service.NewSliderService(sliderRepo)
 	finderService  := service.NewFinderService(finderRepo)
+	userService	   := service.NewUserService(userRepo, jwt)
 	sliderHandler  := handler.NewSliderHandler(sliderService)
 	finderHandler  := handler.NewFinderHandler(finderService)
+	userHandler	   := handler.NewUserHandler(userService)
 
 	// Register all API routes with the configured handler
-	routes.SetupAPIRoutes(app, sliderHandler, finderHandler)
+	routes.SetupAPIRoutes(app, sliderHandler, finderHandler, userHandler, jwt)
 
     // Expose Prometheus-style metrics endpoint
     app.Get("/metrics", monitor.New(monitor.Config{
