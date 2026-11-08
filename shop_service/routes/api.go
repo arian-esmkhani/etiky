@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fiber-app/handler"
+	"fiber-app/helper"
 	"fiber-app/middleware"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,7 +11,8 @@ import (
 // SetupAPIRoutes configures all API routes with their middleware and handlers.
 // Groups routes under /api prefix with compression, CORS, and rate limiting.
 func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
-	finderHandler *handler.FinderHandler) {
+	finderHandler *handler.FinderHandler, userHandler *handler.UserHandler,
+	jwt *helper.JWT) {
 
 	api := app.Group("/api",
 		middleware.Compression(),
@@ -43,4 +45,11 @@ func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
 	// articles
 	finder.Get("/articles/:title", finderHandler.FindArticleByTitle)
 	finder.Get("/articles/:slug", finderHandler.FindArticleBySlug)
+
+	// Auth routes
+	auth := api.Group("/auth")
+	auth.Post("/signup", userHandler.CreateUser)
+	auth.Post("/admin/signup", userHandler.CreateAdminUser)
+	auth.Post("/login", userHandler.Login)  
+	auth.Get("/check", middleware.Auth(jwt), userHandler.CheckAuth)
 }
