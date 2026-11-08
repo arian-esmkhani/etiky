@@ -112,10 +112,6 @@ export const finderService = {
                     throw {
                         type: 'VALIDATION_ERROR'
                     };
-                case 404:
-                    throw {
-                        type: 'NOT_FOUND'
-                    };
                 case 429:
                     throw {
                         type: 'RATE_LIMIT_EXCEEDED'
