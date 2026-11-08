@@ -30,6 +30,35 @@ func ValidateProductFilter(filter dto.ProductFilterDto) string {
 	return ""
 }
 
+// ValidateLogin validates all fields of a login request.
+// It returns the name of the first invalid field, or "" if everything is valid.
+func ValidateLogin(login dto.LoginDto) string {
+	fields := []struct {
+		name  string
+		value string
+	}{
+		{"number", login.Number},
+		{"password", login.Password},
+	}
+
+	for _, f := range fields {
+		var isValid bool
+		
+		switch f.name {
+		case "number":
+			isValid = PhoneRegex.MatchString(f.value)
+		case "password":
+			isValid = PasswordRegex.MatchString(f.value)
+		}
+
+		if !isValid {
+			return f.name
+		}
+	}
+
+	return ""
+}
+
 // ReadPriceRange reads low_price and max_price.
 // On failure it returns the name of the invalid field.
 func ReadPriceRange(c *fiber.Ctx) (low, high uint32, badField string) {

@@ -13,6 +13,8 @@ var (
 	FilterRegex = regexp.MustCompile(`^[\p{L}\p{N}\s\-_\x{200C}]{1,40}$`)
 	TextRegex   = regexp.MustCompile(`^[\p{L}\p{N}\s\-_\x{200C}]{1,190}$`)
 	SlugRegex   = regexp.MustCompile(`^[\p{L}\p{N}\-_\x{200C}]{1,200}$`)
+	PhoneRegex    = regexp.MustCompile(`^09[0-9]{9}$`)
+	PasswordRegex = regexp.MustCompile(`^.{8,50}$`) 
 )
 
 // ValidFilterValue accepts an empty value (filter not set) or a value matching FilterRegex.

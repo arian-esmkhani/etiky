@@ -6,3 +6,8 @@ type ProductFilterDto struct {
 	Feature   string `json:"feature,omitempty"`
 	Tag   	  string `json:"tag,omitempty"`
 }
+
+type LoginDto struct {
+	Number   string `json:"number"`
+	Password string `json:"password"`
+}
