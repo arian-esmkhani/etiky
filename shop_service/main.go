@@ -49,11 +49,14 @@ func main() {
     
 	// Dependency Injection Setup
 	sliderRepo 	   := repo.NewSliderRepo(db)
+	finderRepo	   := repo.NewFinderRepo(db)
 	sliderService  := service.NewSliderService(sliderRepo)
+	finderService  := service.NewFinderService(finderRepo)
 	sliderHandler  := handler.NewSliderHandler(sliderService)
+	finderHandler  := handler.NewFinderHandler(finderService)
 
 	// Register all API routes with the configured handler
-	routes.SetupAPIRoutes(app, sliderHandler)
+	routes.SetupAPIRoutes(app, sliderHandler, finderHandler)
 
     // Expose Prometheus-style metrics endpoint
     app.Get("/metrics", monitor.New(monitor.Config{
