@@ -1,6 +1,6 @@
 CREATE TABLE contents (
     id BIGSERIAL PRIMARY KEY,
-    article_id BIGINT NOT NULL,
+    article_id BIGINT NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     title_tag VARCHAR(100) NOT NULL,
     paragraph TEXT[],
