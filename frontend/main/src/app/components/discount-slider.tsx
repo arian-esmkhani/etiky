@@ -77,7 +77,7 @@ export function DiscountSlider() {
                     />
                     <MoreNav 
                         className="mt-4 mr-1 sm:mr-9" 
-                        onClick={() => router.push('/products/discount')} 
+                        onClick={() => router.push('/discounts')} 
                     />
                 </div>
             </div>
