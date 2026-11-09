@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "./ui/toast";
 import '@fontsource/vazirmatn'
+import { AppNav } from "./components/nav";
 
 export const metadata: Metadata = {
   title: "فروشگاه اینترنتی اکسسوری",
@@ -22,6 +23,7 @@ export default function RootLayout({
       </head>
       <body>
         <ToastProvider>
+          <AppNav/>
           <main>
             {children}
           </main>

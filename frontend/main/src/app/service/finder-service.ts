@@ -64,7 +64,7 @@ export const finderService = {
         if (maxPrice !== undefined) url.searchParams.append('max_price', String(maxPrice));
         if (page !== undefined) url.searchParams.append('page', String(page));
         const response = await fetch(url.toString(), {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
 
