@@ -35,7 +35,7 @@ export const finderService = {
 
     async FindCheapestProductsByFilter(filter: ProductFilterDto,
         page?: number): Promise<PreviewProductRes> {
-        const url = new URL(`/api/finder/suggested`, window.location.origin);
+        const url = new URL(`/api/finder/filter`, window.location.origin);
         if (page !== undefined) url.searchParams.append('page', String(page));
         const response = await fetch(url.toString(), {
             method: "POST",
