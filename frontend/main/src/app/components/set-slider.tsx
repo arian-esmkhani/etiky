@@ -49,7 +49,7 @@ export function SetSlider() {
                 <div className="relative rounded-2xl overflow-hidden">
                     <div className="bg-[rgb(217,47,74)] px-6 py-5 sm:py-10">
                         <div className="flex items-center justify-between">
-                            <MoreNav onClick={() => router.push("/")}/>
+                            <MoreNav onClick={() => router.push("/sets")}/>
                             <h3 className="text-xl sm:text-2xl font-bold text-gray-300/80">
                                 {"یک انتخاب دو نفره"}
                             </h3>
