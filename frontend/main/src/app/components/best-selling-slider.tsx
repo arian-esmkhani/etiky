@@ -70,7 +70,7 @@ export function BestSellingSlider() {
                         <div className="flex items-center justify-between">
                             <MoreNav className="group relative px-4 py-2 text-sm font-medium 
                             text-[rgb(217,47,74)] hover:text-[rgb(250,91,117)]"
-                            onClick={() => router.push("/")}/> 
+                            onClick={() => router.push("/best-selling")}/> 
                             <div className="flex items-center gap-3">
                                 <h3 className="text-lg sm:text-xl text-[rgb(217,47,74)]">
                                     {"پرفروش ترین ها"}
