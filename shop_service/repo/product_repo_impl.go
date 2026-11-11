@@ -274,6 +274,24 @@ func (r *productRepo) FindByID(ctx context.Context, id uint64) (*dto.ProductDto,
 	return &product, nil
 }
 
+func (r *productRepo) GetProductImages(ctx context.Context, id uint64) (string, []string, error) {
+	query := `SELECT image_url, images FROM products WHERE id = $1`
+	
+	var mainImage string
+	var galleryImages []string
+	
+	err := r.db.QueryRow(ctx, query, id).Scan(&mainImage, &galleryImages)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", nil, errProductNotFound
+		}
+		log.Errorf("Failed to find product images %d: %v", id, err)
+		return "", nil, err
+	}
+	
+	return mainImage, galleryImages, nil
+}
+
 func (r *productRepo) UpdateGallery(ctx context.Context, id uint64, images []string) error {
 	query := `
 		UPDATE products 

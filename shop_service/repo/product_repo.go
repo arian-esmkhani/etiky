@@ -13,6 +13,7 @@ type IProductRepo interface {
 	HardDelete(ctx context.Context, id uint64) error
 	Restore(ctx context.Context, id uint64) error
 	FindByID(ctx context.Context, id uint64) (*dto.ProductDto, error)
+	GetProductImages(ctx context.Context, id uint64) (string, []string, error)
 	UpdateGallery(ctx context.Context, id uint64, images []string) error
 	UpdatePricesByPercent(ctx context.Context, percent float64) error
 }
