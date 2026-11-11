@@ -289,7 +289,7 @@ func (s *productService) saveImage(file *multipart.FileHeader) (string, error) {
 	newFileName := fmt.Sprintf("%d_%s%s", time.Now().UnixNano(), baseName, ext)
 	
 	// Storage path
-	savePath := filepath.Join("../../storage/images", newFileName)
+	savePath := filepath.Join("../storage/images", newFileName)
 	
 	// Open the uploaded file for reading
 	src, err := file.Open()
@@ -331,7 +331,7 @@ func (s *productService) cleanupImages(mainPath string, galleryPaths []string) {
 		}
 		// Convert relative URL path to physical filesystem path
 		filename := filepath.Base(path)
-		physicalPath := filepath.Join("../../storage/images", filename)
+		physicalPath := filepath.Join("../storage/images", filename)
 		
 		if err := os.Remove(physicalPath); err != nil && !os.IsNotExist(err) {
 			log.Warnf("Failed to cleanup image: %s, error: %v", physicalPath, err)
@@ -344,7 +344,7 @@ func (s *productService) deleteImage(imagePath string) {
 		return
 	}
 	filename := filepath.Base(imagePath)
-	physicalPath := filepath.Join("../../storage/images", filename)
+	physicalPath := filepath.Join("../storage/images", filename)
 
 	if err := os.Remove(physicalPath); err != nil && !os.IsNotExist(err) {
 		log.Warnf("Failed to delete image: %s, error: %v", physicalPath, err)
