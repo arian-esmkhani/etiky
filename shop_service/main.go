@@ -59,17 +59,21 @@ func main() {
 	finderRepo	   := repo.NewFinderRepo(db)
 	userRepo	   := repo.NewUserRepo(db)
 	productRepo    := repo.NewProductRepo(db)
+	cartRepo 	   := repo.NewCartRepo(db)
 	sliderService  := service.NewSliderService(sliderRepo)
 	finderService  := service.NewFinderService(finderRepo)
 	userService	   := service.NewUserService(userRepo, jwt)
 	productService := service.NewProductService(productRepo)
+	cartService    := service.NewCartService(cartRepo)
 	sliderHandler  := handler.NewSliderHandler(sliderService)
 	finderHandler  := handler.NewFinderHandler(finderService)
 	userHandler	   := handler.NewUserHandler(userService)
 	productHandler := handler.NewProductHandler(productService)
+	cartHandler    := handler.NewCartHandler(cartService)
 
 	// Register all API routes with the configured handler
-	routes.SetupAPIRoutes(app, sliderHandler, finderHandler, userHandler, productHandler, jwt)
+	routes.SetupAPIRoutes(app, sliderHandler, finderHandler, userHandler, productHandler,
+		cartHandler, jwt)
 
     // Expose Prometheus-style metrics endpoint
     app.Get("/metrics", monitor.New(monitor.Config{
