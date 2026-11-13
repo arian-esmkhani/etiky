@@ -12,7 +12,7 @@ import (
 // Groups routes under /api prefix with compression, CORS, and rate limiting.
 func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
 	finderHandler *handler.FinderHandler, userHandler *handler.UserHandler,
-	jwt *helper.JWT) {
+	productHandler *handler.ProductHandler, jwt *helper.JWT) {
 
 	api := app.Group("/api",
 		middleware.Compression(),
@@ -52,4 +52,19 @@ func SetupAPIRoutes(app *fiber.App, sliderHandler *handler.SliderHandler,
 	auth.Post("/admin/signup", userHandler.CreateAdminUser)
 	auth.Post("/login", userHandler.Login)  
 	auth.Get("/check", middleware.Auth(jwt), userHandler.CheckAuth)
+
+	// Admin routes
+	admin := api.Group("/admin", middleware.Auth(jwt),
+		middleware.RequireAdmin(), middleware.DefaultLimiter())
+	admin.Post("/product/", productHandler.CreateProduct)
+	admin.Patch("/product/:id", productHandler.UpdateProduct)
+	admin.Patch("/product/:id/soft", productHandler.SoftDeleteProduct)
+	admin.Delete("/product/:id/permanent", productHandler.HardDeleteProduct)
+	admin.Patch("/product/:id/restore", productHandler.RestoreProduct)
+	admin.Post("/product/:id/images", productHandler.AddProductImages)
+	admin.Delete("/product/:id/images", productHandler.RemoveProductImages)
+
+	// Product routes
+	product := api.Group("/product", middleware.DefaultLimiter())
+	product.Get("/:id", productHandler.GetProductByID)
 }
